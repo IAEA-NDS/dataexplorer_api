@@ -6,10 +6,10 @@ EXFOR_JSON = "exfor/json/" # path from root
 from exfor_dictionary.exfor_dictionary import Diction
 D = Diction()
 
-institutes = D.dictionaries["3"]["codes"]
-methods = D.dictionaries["21"]["codes"]
-detectors  = D.dictionaries["22"]["codes"]
-facilities = D.dictionaries["18"]["codes"]
+institutes = D.read_diction("3")["codes"]
+methods = D.read_diction("21")["codes"]
+detectors  = D.read_diction("22")["codes"]
+facilities = D.read_diction("18")["codes"]
 
 exfor_api = Blueprint('burritos', __name__,)
 

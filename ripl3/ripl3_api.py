@@ -3,8 +3,8 @@ import os
 import json
 import re
 
-app =   Flask(__name__)
-# ripl3_api = Blueprint('burritos', __name__,)
+#app =   Flask(__name__)
+ripl3_api = Blueprint('ripl3', __name__,)
 
 
 RIPLPATH = "./"
@@ -20,6 +20,7 @@ RIPLPATH = "./"
 #         data = json.load(json_file)
  
 #     return jsonify(data)
+
 def open_json(nuclide):
     elem = re.sub(r'[^A-Za-z]{1,2}', '', nuclide)
     mass = re.sub(r'[0-9]{1,3}', '', nuclide)
@@ -28,42 +29,38 @@ def open_json(nuclide):
         return json.load(json_file)
 
 
-@app.route('/')
+@ripl3_api.route('/')
 def home():
     data = "This is RIPLE-3 REST API"
     return jsonify({'message': data})
 
 
-@app.route('/levels/<string:nuclide>') #, methods = ['GET'])
+@ripl3_api.route('/levels/<string:nuclide>') #, methods = ['GET'])
 def nuclide(nuclide):
     data = open_json(nuclide)
     return jsonify(data)
 
 
 
-@app.route('/levels/<string:nuclide>/info') #, methods = ['GET'])
+@ripl3_api.route('/levels/<string:nuclide>/info') #, methods = ['GET'])
 def nuclide_info(nuclide):
   data = open_json(nuclide)
   return jsonify(data["level_info"])
 
 
 
-@app.route('/levels/<string:nuclide>/levels') #, methods = ['GET'])
+@ripl3_api.route('/levels/<string:nuclide>/levels') #, methods = ['GET'])
 def nuclide_levels(nuclide):
   data = open_json(nuclide)
   return jsonify(data["level_info"]["levels"])
 
 
 
-@app.route('/levels/<string:nuclide>/level_record/levelnum/<string:levelnum>') #, methods = ['GET'])
+@ripl3_api.route('/levels/<string:nuclide>/level_record/levelnum/<string:levelnum>') #, methods = ['GET'])
 def level_num(nuclide, levelnum):
   data = open_json(nuclide)
   return jsonify(data["level_record"][int(levelnum)])
 
 
-
-
-
-
-if __name__=='__main__':
-  app.run(debug=True)
+#if __name__=='__main__':
+#  app.run(debug=True)
