@@ -7,7 +7,7 @@ import re
 ripl3_api = Blueprint('ripl3', __name__,)
 
 
-RIPLPATH = "./"
+RIPLPATH = "/srv/data/ripl3_json/json"
 # @app.route('/ripl3/levels', methods = ['GET'])
 # def ripl():
 #   if(request.method == 'GET'):
@@ -24,7 +24,7 @@ RIPLPATH = "./"
 def open_json(nuclide):
     elem = re.sub(r'[^A-Za-z]{1,2}', '', nuclide)
     mass = re.sub(r'[0-9]{1,3}', '', nuclide)
-    file = os.path.join(RIPLPATH, "json", "levels", elem, nuclide + ".json")
+    file = os.path.join(RIPLPATH, "levels", elem, nuclide + ".json")
     with open(file) as json_file:
         return json.load(json_file)
 
