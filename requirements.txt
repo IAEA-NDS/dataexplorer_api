@@ -6,4 +6,7 @@ Jinja2==3.1.2
 MarkupSafe==2.1.2
 Werkzeug==2.2.3
 zipp==3.15.0
-#git+https://github.com/iaea-nds/exfor_dictionary@main
+endftables_sql @ git+https://github.com/shinokumura/endftables_sql@main
+exforparser @ git+https://github.com/shinokumura/exforparser@main
+exfor_dictionary @ git+https://github.com/IAEA-NDS/exfor_dictionary@main
+ripl3_json @ git+https://github.com/shinokumura/ripl3_json@main

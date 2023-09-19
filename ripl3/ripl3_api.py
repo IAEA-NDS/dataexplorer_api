@@ -2,29 +2,25 @@ from flask import Flask, jsonify, request, Blueprint
 import os
 import json
 import re
+from config import RIPL3
 
-#app =   Flask(__name__)
+
+
 ripl3_api = Blueprint('ripl3', __name__,)
 
-
-RIPLPATH = "/srv/data/ripl3_json/json"
-# @app.route('/ripl3/levels', methods = ['GET'])
-# def ripl():
-#   if(request.method == 'GET'):
-#     args = request.args
-#     nuclide = args.get('nuclide')
-#     elem = re.sub(r'[^A-Za-z]{1,2}', '', nuclide)
-
-#     file = os.path.join(RIPLPATH, "json", "levels", elem, nuclide + ".json")
-#     with open(file) as json_file:
-#         data = json.load(json_file)
- 
-#     return jsonify(data)
 
 def open_json(nuclide):
     elem = re.sub(r'[^A-Za-z]{1,2}', '', nuclide)
     mass = re.sub(r'[0-9]{1,3}', '', nuclide)
-    file = os.path.join(RIPLPATH, "levels", elem, nuclide + ".json")
+    file = os.path.join(RIPL3, "data/levels_json", elem, nuclide + ".json")
+    with open(file) as json_file:
+        return json.load(json_file)
+
+
+def open_dat(nuclide):
+    elem = re.sub(r'[^A-Za-z]{1,2}', '', nuclide)
+    mass = re.sub(r'[0-9]{1,3}', '', nuclide)
+    file = os.path.join(RIPL3, "data/levels", elem, nuclide + ".dat")
     with open(file) as json_file:
         return json.load(json_file)
 
