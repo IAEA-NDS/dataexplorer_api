@@ -1,9 +1,11 @@
 import json
 import os
 from flask import jsonify, request, Blueprint
+import pandas as pd
 
 from config import EXFOR_JSON_GIT_REPO_PATH
 from exfor_dictionary.exfor_dictionary import Diction
+from submodules.exfor.queries import entries_query, data_query
 D = Diction()
 
 institutes = D.read_diction("3")
@@ -13,6 +15,9 @@ facilities = D.read_diction("18")
 
 exfor_api = Blueprint('exfor', __name__,)
 
+page_size = 100
+
+# https://medium.com/@piedjoustephane/prototyping-object-relational-mapping-orm-model-from-a-json-object-96eb0ea05ad4
 # https://realpython.com/flask-blueprint/
 # This is the page of /api/exfor/ root
 def open_json(entnum):
@@ -23,6 +28,7 @@ def open_json(entnum):
             return json.load(json_file)
     else:
         return None
+
 
 def check_entlen(entnum):
     if len(entnum) != 5:
@@ -94,6 +100,68 @@ def subentry(entnum, subent):
             if entry.get(j):
                 subentry[j] = entry[j][subent]
         return jsonify(subentry)
+
+
+
+###### ------------------------------------ ######
+######             Entries
+###### ------------------------------------ ######
+
+@exfor_api.route('/entries') #, methods = ['GET'])
+def entries():
+    # df = pd.DataFrame()
+    ## currently same as /reactions/search
+    if request.args.get("query"):
+        # will be implement with Elasticsearch
+        pass
+    page = request.args.get('page', default=1, type=int)
+    # Calculate the start and end indexes for the current page
+    start_index = (page - 1) * page_size
+    end_index = start_index + page_size
+    # Slice the data to return the current page's content
+    target_elem = request.args.get("target_elem")
+    target_mass = request.args.get("target_mass")
+    reaction = request.args.get("reaction")
+
+    methods = request.args.get("method")
+    facility = request.args.get("facility")
+    institute = request.args.get("institute")
+    detectors = request.args.get("detector")
+
+    ## From reaction code
+    type = request.args.get("sf6")
+    sf6 = request.args.get("sf6")  # type
+    sf5 = request.args.get("sf5")  
+    sf4 = request.args.get("sf4")  
+    sf7 = request.args.get("sf7")  
+    sf8 = request.args.get("sf8")  
+
+    # print(sf6, elem, mass, reaction)
+    kwargs = {}
+    if target_elem and target_mass and reaction:
+        kwargs = dict(sf6=sf6,
+                    type=type, 
+                    target_elem=target_elem.upper() if target_elem else None, 
+                    target_mass=target_mass.upper() if target_mass else None, 
+                    reaction=reaction.upper() if reaction else None,
+                    methods=methods.upper() if methods else None,
+                    facility=facility.upper() if facility else None,
+                    institute=institute.upper() if institute else None,
+                    detectors=detectors.upper() if detectors else None,
+                    sf5=sf5.upper() if sf5 else None,
+                    sf4=sf4.upper() if sf4 else None,
+                    sf7=sf7.upper() if sf7 else None,
+                    sf8=sf8.upper() if sf8 else None,)
+
+    df = entries_query(**kwargs)
+    entries = df.set_index('entry_id').to_dict('index')
+    print(entries)
+    # data_table = data_query(entries.keys())
+
+    data = {"hits": len(entries), "aggregations": entries}#[{e:d} for e,d in dict(entries).items()][start_index:end_index] }
+    return jsonify(data)
+
+
 
 
 

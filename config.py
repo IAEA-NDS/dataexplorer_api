@@ -3,7 +3,7 @@ import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
 import site
 
-DEVENV = False
+DEVENV = True 
 
 if DEVENV:
     ## Application file location
@@ -22,7 +22,7 @@ else:
     ## Data directory linked from the code
     DATA_DIR = "/srv/data/dataexplorer2/"
 
-    API_BASE_URL = "http://int-nds.iaea.org/"
+    API_BASE_URL = "https://int-nds.iaea.org/dataexplorer/api/"
 
 
 ## Package locations
@@ -47,18 +47,6 @@ MASTER_GIT_REPO_PATH = os.path.join(DATA_DIR, "exfor_master")
 EXFOR_JSON_GIT_REPO_PATH = os.path.join(DATA_DIR, "exfor_json")
 EXFORTABLES_PY_GIT_REPO_PATH = os.path.join(DATA_DIR, "exfortables_py")
 ENDFTABLES_PATH = os.path.join(DATA_DIR, "libraries.all/")
-
-
-MASTER_GIT_REPO_URL = "https://github.com/IAEA-NDS/exfor_master/"
-
-
-""" Git  """
-## In order to get EXFOR compilation history
-owner = "IAEA-NDS"
-repo = "exfor_master"
-ref = "main"
-api_token = ""
-
 
 
 
