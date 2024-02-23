@@ -45,7 +45,7 @@ def generate_link_of_file(dir, files, entid):
     f = next(x for x in files if entid in x)
 
     if f:
-        return os.path.join(get_url_root(), dir.replace(DATA_DIR, ""), f)
+        return os.path.join(get_url_root().replace("api/", ""), dir.replace(DATA_DIR, ""), f)
     
     else:
         return None
