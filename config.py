@@ -3,14 +3,14 @@ import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
 import site
 
-DEVENV = True 
+DEVENV = False 
 
 if DEVENV:
     ## Application file location
-    TOP_DIR = "/Users/sin/Dropbox/Development/dataexplorer2/"
+    TOP_DIR = "/Users/okumuras/Dropbox/Development/dataexplorer2/"
 
     ## Data directory linked from the code
-    DATA_DIR = "/Users/sin/Documents/nucleardata/EXFOR/"
+    DATA_DIR = "/Users/okumuras/Documents/nucleardata/EXFOR/"
 
     API_BASE_URL = "http://127.0.0.1:5000/"
 
@@ -22,7 +22,7 @@ else:
     ## Data directory linked from the code
     DATA_DIR = "/srv/data/dataexplorer2/"
 
-    API_BASE_URL = "https://int-nds.iaea.org/dataexplorer/api/"
+    API_BASE_URL = "https://nds.iaea.org/dataexplorer/api/"
 
 
 ## Package locations
