@@ -7,10 +7,10 @@ DEVENV = True
 
 if DEVENV:
     ## Application file location
-    TOP_DIR = "/Users/okumuras/Dropbox/Development/dataexplorer2/"
+    TOP_DIR = "/Users/sin/Dropbox/Development/dataexplorer2/"
 
     ## Data directory linked from the code
-    DATA_DIR = "/Users/okumuras/Documents/nucleardata/EXFOR/"
+    DATA_DIR = "/Users/sin/Documents/nucleardata/EXFOR/"
 
     API_BASE_URL = "http://127.0.0.1:5000/"
 
