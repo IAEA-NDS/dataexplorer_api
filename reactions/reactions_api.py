@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from config import API_BASE_URL
 
-from api_common import input_correction, generate_link_of_file
+from api_common import PAGEPARAM_TYPE, input_correction, generate_link_of_file
 
 from submodules.common import generate_exfortables_file_path, generate_endftables_file_path
 from submodules.exfor.queries import index_query, get_entry_bib, data_query
@@ -49,7 +49,7 @@ def search(type):
     Save args into input_store
     """
     input_store = dict(request.args)
-    input_store["type"] = type.upper()
+    input_store["type"] = PAGEPARAM_TYPE[type]
 
     ## to make sure that the values are stored as boolean
     input_store["table"] = request.args.get("table", type=bool) if request.args.get("table") else False

@@ -8,9 +8,15 @@ from submodules.utilities.mass import mass_range
 from submodules.utilities.elem import elemtoz_nz
 
 
+PAGEPARAM_TYPE = {
+    "thermal": "TH",
+    "residual": "RP",
+    "xs": "XS",
+    "fy": "FY",
+}
+
 
 def input_correction(elem, mass, reaction):
-    print(elem, mass, reaction)
 
     if elem and mass:
         min = mass_range[elemtoz_nz(elem.capitalize())]["min"]
