@@ -1,8 +1,7 @@
 import os
-import json
-from flask import request
+from flask import request, jsonify
 
-from config import DATA_DIR, EXFOR_JSON_GIT_REPO_PATH, EXFORTABLES_PY_GIT_REPO_PATH
+from config import DATA_DIR
 from submodules.utilities.util import get_number_from_string
 from submodules.utilities.mass import mass_range
 from submodules.utilities.elem import elemtoz_nz
@@ -13,6 +12,7 @@ PAGEPARAM_TYPE = {
     "residual": "RP",
     "xs": "XS",
     "fy": "FY",
+    "angle": "DA",
 }
 
 
@@ -56,4 +56,39 @@ def generate_link_of_file(dir, files, entid):
     else:
         return None
 
+
+
+def error_response(message, required=None, missing=None, example=None, status_code=400):
+    payload = {"error": message}
+    if required is not None:
+        payload["required"] = required
+    if missing is not None:
+        payload["missing"] = missing
+    if example is not None:
+        payload["example"] = example
+    return jsonify(payload), status_code
+
+
+
+def find_pageparam_key(obs_type: str):
+    if obs_type in PAGEPARAM_TYPE:
+        return obs_type
+    lower = obs_type.lower()
+    for k in PAGEPARAM_TYPE.keys():
+        if k.lower() == lower:
+            return k
+    return None
+
+
+def get_bool_arg(name: str, default: bool):
+    """
+    リクエストクエリから真偽値を穏やかに取得するヘルパー。
+    '1','true','yes','on' を True とみなす。
+    """
+    val = request.args.get(name)
+    if val is None:
+        return default
+    if isinstance(val, str):
+        return val.lower() in ("1", "true", "yes", "on")
+    return bool(val)
 

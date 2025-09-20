@@ -41,8 +41,8 @@ MAPPING_FILE = os.path.join(TOP_DIR, "exfor/datahandle/mapping.json")
 MASS_RANGE_FILE = os.path.join(TOP_DIR, "submodules/utilities/A_min_max.txt")
 
 ## Define the location of data files
-EXFOR_DB = os.path.join(DATA_DIR, "exfor.sqlite")
-ENDFTAB_DB = os.path.join(DATA_DIR, "endftables.sqlite")
+EXFOR_DB = os.path.join(DATA_DIR, "exfortables_level.sqlite")
+ENDFTAB_DB = os.path.join(DATA_DIR, "endftables_.sqlite")
 MASTER_GIT_REPO_PATH = os.path.join(DATA_DIR, "exfor_master")
 EXFOR_JSON_GIT_REPO_PATH = os.path.join(DATA_DIR, "exfor_json")
 EXFORTABLES_PY_GIT_REPO_PATH = os.path.join(DATA_DIR, "exfortables_py")

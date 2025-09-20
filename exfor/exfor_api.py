@@ -4,7 +4,7 @@ from flask import jsonify, request, Blueprint
 import pandas as pd
 
 from config import EXFOR_JSON_GIT_REPO_PATH
-from exfor_dictionary.exfor_dictionary import Diction
+from exfor_dictionary.exfor_dict import Diction
 from submodules.exfor.queries import entries_query, data_query
 D = Diction()
 
@@ -119,39 +119,42 @@ def entries():
     start_index = (page - 1) * page_size
     end_index = start_index + page_size
     # Slice the data to return the current page's content
-    target_elem = request.args.get("target_elem")
-    target_mass = request.args.get("target_mass")
-    reaction = request.args.get("reaction")
+    target_elem = request.args.get("target_elem", "")
+    target_mass = request.args.get("target_mass", "")
+    reaction = request.args.get("reaction", "")
+    obs_type = request.args.get("obs_type", "")
+    projectile = request.args.get("projectile", "")
 
-    methods = request.args.get("method")
-    facility = request.args.get("facility")
-    institute = request.args.get("institute")
-    detectors = request.args.get("detector")
+    methods = request.args.get("method", "")
+    facility = request.args.get("facility", "")
+    institute = request.args.get("institute", "")
+    detectors = request.args.get("detector", "")
 
     ## From reaction code
-    type = request.args.get("sf6")
-    sf6 = request.args.get("sf6")  # type
-    sf5 = request.args.get("sf5")  
-    sf4 = request.args.get("sf4")  
-    sf7 = request.args.get("sf7")  
-    sf8 = request.args.get("sf8")  
+    type = request.args.get("sf6", "")
+    sf6 = request.args.get("sf6", "")  # type
+    sf5 = request.args.get("sf5", "")  
+    sf4 = request.args.get("sf4", "")  
+    sf7 = request.args.get("sf7", "")  
+    sf8 = request.args.get("sf8", "")  
 
     # print(sf6, elem, mass, reaction)
     kwargs = {}
     if target_elem and target_mass and reaction:
         kwargs = dict(sf6=sf6,
-                    type=type, 
-                    target_elem=target_elem.upper() if target_elem else None, 
-                    target_mass=target_mass.upper() if target_mass else None, 
-                    reaction=reaction.upper() if reaction else None,
-                    methods=methods.upper() if methods else None,
-                    facility=facility.upper() if facility else None,
-                    institute=institute.upper() if institute else None,
-                    detectors=detectors.upper() if detectors else None,
-                    sf5=sf5.upper() if sf5 else None,
-                    sf4=sf4.upper() if sf4 else None,
-                    sf7=sf7.upper() if sf7 else None,
-                    sf8=sf8.upper() if sf8 else None,)
+                    obs_type=obs_type, 
+                    target_elem=target_elem.upper(), 
+                    target_mass=target_mass.upper(), 
+                    reaction=reaction.upper(),
+                    projectile=projectile.upper(),
+                    methods=methods.upper(),
+                    facility=facility.upper(),
+                    institute=institute.upper(),
+                    detectors=detectors.upper(),
+                    sf5=sf5.upper(),
+                    sf4=sf4.upper(),
+                    sf7=sf7.upper(),
+                    sf8=sf8.upper(),)
 
     df = entries_query(**kwargs)
     entries = df.set_index('entry_id').to_dict('index')
