@@ -69,7 +69,7 @@ def search(obs_type):
         example_url = f"{API_BASE_URL}reactions/{obs_key}?target_elem=Al&target_mass=27&reaction=n%2Cp"
 
 
-    # check for missing required params (only this "不足"を丁寧に扱う)
+    # check for missing required params
     missing = [p for p in required_params if not request.args.get(p)]
     if missing:
         return error_response(
@@ -90,13 +90,13 @@ def search(obs_type):
 
     # auto-complete reaction/projectile when inc_pt provided (fix typo from original)
     if input_store.get("reaction"):
-        # reaction があればこちらを優先
+        # if reaction, use reaction string
         proj = input_store["reaction"].split(",")[0].lower()
         input_store["projectile"] = proj
         input_store["inc_pt"] = proj.upper()
 
     elif input_store.get("inc_pt"):
-        # reaction が無ければ inc_pt を使う
+        # if not reaction, use inc_pt
         proj = input_store["inc_pt"].lower()
         input_store["projectile"] = proj
         input_store["inc_pt"] = proj.upper()
@@ -163,7 +163,7 @@ def search(obs_type):
     # --- Run queries ---
     legends = {}
     libraries = {}
-    print(input_store)
+
     entries = exfor_index_query(input_store)
     if entries:
         # merge bibliographic info
